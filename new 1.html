@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Previous head section remains the same -->
+<style>
+  ul {
+    padding-left: 20px; /* Adjust this value to control the indentation */
+  }
+</style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pharmacy Student Handbook</title>
+    <style>
+        /* Previous styles remain the same */
+        :root {
+            --primary-color: #052049;
+            --secondary-color: #595959;
+            --background-color: #FFFFFF;
+            --light-gray: #F0F0F0;
+            --gray: #808080;
+            --text-color: #052049;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #sidebar {
+            width: 250px;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #logo {
+            background-color: var(--secondary-color);
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .nav-button {
+            background: none;
+            border: none;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            width: 100%;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .nav-button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-button.active {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        #content {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .sub-page {
+            display: none;
+        }
+
+        .sub-page.active {
+            display: block;
+        }
+
+        .sub-nav-button {
+            background-color: var(--light-gray);
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .sub-nav-button:hover {
+            background-color: var(--gray);
+            color: white;
+        }
+
+        .sub-nav-button.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .tab-container {
+            border-bottom: 1px solid var(--gray);
+            margin: 20px 0;
+            padding: 0 10px;
+        }
+
+        .tab-button {
+            padding: 10px 20px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 16px;
+            position: relative;
+            margin-right: 5px;
+        }
+
+        .tab-button:hover {
+            background-color: var(--light-gray);
+        }
+
+        .tab-button.active {
+            border-bottom: 3px solid var(--primary-color);
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px;
+            background-color: var(--background-color);
+            border-radius: 4px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .calculator-frame {
+            width: 100%;
+            height: 800px;
+            border: none;
+        }
+
+        .section-header {
+            margin: 20px 0 10px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .nav-container {
+            margin: 20px 0;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+    <div id="sidebar">
+        <div id="logo">
+            Pharmacy<br>Student<br>Handbook
+        </div>
+        <button class="nav-button active" data-page="home">Home</button>
+        <button class="nav-button" data-page="patho">Pathophysiology</button>
+        <button class="nav-button" data-page="tpx">Therapeutics</button>
+        <button class="nav-button" data-page="calc">Clinical Calculators</button>
+    </div>
+
+    <div id="content">
+        <div id="home" class="page active">
+            <h2 class="section-header">Welcome to Pharmacy Student Handbook</h2>
+            <p>Material adapted from 2023, please check for updated information</p>
+        </div>
+
+        <div id="patho" class="page">
+            <h2 class="section-header">Pathophysiology</h2>
+            <div class="nav-container">
+                <button class="sub-nav-button" data-subpage="cardio">Cardiovascular</button>
+                <button class="sub-nav-button" data-subpage="respiratory">Respiratory</button>
+            </div>
+            
+            <div id="cardio" class="sub-page">
+                <div class="tab-container">
+                    <button class="tab-button active" data-tab="acs">ACS and MI</button>
+                    <button class="tab-button" data-tab="hf">Heart Failure</button>
+                    <button class="tab-button" data-tab="arrhythmias">Arrhythmias</button>
+                </div>
+                
+                <div id="acs" class="tab-content active">
+					<p><strong>General Cardiovascular System Function:</strong></p>
+					<p><span style="text-decoration: underline;">MAP:</span></p>
+					<p><strong>MAP</strong> is the product of both cardiac output and systemic vascular resistance.</p>
+					<p><strong>Cardiac output</strong> refers to the amount of blood pumped by the heart over time, and is a product of stroke volume and heart rate. The more blood the heart pumps out each contraction and the more often it contracts, the more total blood in the arteries. More blood in the arteries means more pressure. If it helps, imagine the vessels are a tube; if the tube is the same size but you pump more fluid, the pressure has to increase. <strong>In other words, the heart produces the pressure that drives MAP!</strong></p>
+					<p><strong>Systemic vascular resistance</strong>, or SVR, is the total resistance to blood flow outside of the heart. SVR is inversely proportional to the radius of the vessels, so the smaller the vessels the higher the resistance. This should make sense, as there is more contact between the blood and the vessel walls to slow down flow. This also increases MAP. If it helps, the smaller the tube, given the same amount of blood, the higher the pressure.</p>
+					<p>MAP is actually an average of the pressure experienced by the arteries. In reality, the pressure fluctuates as the ventricles of the heart cycle through contraction and relaxation. The <strong>systolic pressure</strong> is the pressure right after contraction (systole) and is the highest measured pressure. The <strong>diastolic pressure</strong> is the pressure right before the next contraction (the end of diastole), where pressure in the ventricle is at its lowest.</p>
+					<p>&nbsp;</p>
+					<p><span style="text-decoration: underline;">Blood Flow and Perfusion:</span></p>
+					<p>The movement of blood in the cardiovascular system is defined as the flow, and is produced by differences in pressure. The force generated through contractions of the heart increases the pressure difference between the ventricle of the heart and the arteries, increasing flow. <strong>Decreasing the diameter of the vessels counteracts the pressure difference, lowering flow</strong>.</p>
+					<p>Local constriction of a vessel thereby limits blood flow to that area by significantly lowering the radius of the vessel increasing resistance. This is not to be confused with SVR, the systemic vascular resistance. This will be important in understanding heart failure later on.</p>
+					<p>&nbsp;</p>
+					<p><span style="text-decoration: underline;">Regulation of MAP and perfusion:</span></p>
+					<p>The sympathetic and parasympathetic nervous sytem provides immediate control of the cardiovascular system in response to stimulus.</p>
+					<p>The <strong>sympathetic nervous system&nbsp;increases&nbsp;</strong>cardiac output and systemic vascular resistance, thereby raising MAP. It&nbsp;increases cardiac output&nbsp;through&nbsp;<strong>activation of&nbsp;beta-1 receptors on the heart&nbsp;</strong>to increase heart rate and contractility, and increases systemic vascular resistance by <strong>activating alpha-1 receptors on the arteries</strong>, constricting the arteries and increasing resistance as a result. Of note, epinephrine, the primary hormone released by the sympathetic nervous system also has some beta-2 activity. Beta-2 on the smooth muscle of the arteries has some vasodialatory effects. Keep beta-2 and smooth muscle dialation in mind later on.</p>
+					<p>The&nbsp;<strong>parasympathetic nervous system&nbsp;</strong><strong>lowers</strong> the cardiac output. It&nbsp;lowers cardiac output by <strong>activating M2 muscarinic receptors on the heart</strong> lowering heart rate and contractility. This in turn lowers MAP.</p>
+					<p>&nbsp;</p>
+					<p><span style="text-decoration: underline;">Atherosclerosis:</span></p>
+					<p>Plaques form in the arteries, as a&nbsp;<strong>result of LDL depositing into the subendothelial space of the blood vessels</strong>&nbsp;which supply blood to the heart. Local inflammation caused by the LDL begins the formation of the plaque. A&nbsp;<strong>fibrous cap</strong> forms as a result of the inflammatory process, which can become unstable over time as the plaque grows and occludes more of the blood vessel. <strong>Occlusion of the blood vessels by plaques lower blood supply, and&nbsp;by extension oxygen supply to the heart.&nbsp;</strong></p>
+					<p>&nbsp;</p>
+					<p><span style="text-decoration: underline;">O2 supply and demand:</span></p>
+					<p>In order for cardiac muscle to stay alive, <strong>it needs oxygen supply to match its oxygen demand.</strong> Multiple factors&nbsp;change the oxygen demand of the&nbsp;cardiac muscle:</p>
+					<ul>
+					<li><strong>Increased proload</strong> increases oxygen demand. As more blood fills the chambers of the heart and stretches the sarcomeres, more exertion of the cardiac mucle is needed to fully contract the chamber. More contraction of the muscle requires more O2</li>
+					<li><strong>Increased afterload</strong> also increases oxygen demand. More afterload means there is more oppositional force the heart has to counteract through a stronger contraction. This requires more oxygen</li>
+					<li><strong>Increased contractility and heart rate</strong> increase oxygen demand, typically in the form of b1 adrenergic receptor activation. Both increased contration of individual muscle cells and a faster rate of contraction require more oxygen.</li>
+					</ul>
+					<p>The formation of plaques limits the amount of oxygen that can be supplied to the heart. Not being able to adequately supply heart muscle with oxygen results in a category of disease states called coronary syndromes.&nbsp;<strong>Angina, which is&nbsp;is&nbsp;chest pain as a&nbsp;result of ischemia to cardiac tissue</strong>,&nbsp;is within this category of coronary syndromes. There are two categories of angina:</p>
+					<ul>
+					<li><strong>Stable angina,</strong> which occurs&nbsp;<strong>on exertion, as a result of the plaque allowing anough perfusion at rest but not when there is increased demand on the heart</strong></li>
+					<li><strong>Unstable angina,</strong> which occurs at rest and is the result of an&nbsp;<strong>acute transformation of the plaque leading to thrombosis.</strong> Blood supply is not enough even at rest, and is a sign that an&nbsp;<strong>Acute Myocardial Infarction</strong>, or complete occlusion will soon occur.</li>
+					</ul>
+					<p>--------------------------------------------------------------------------------------------------------------------------------------------------&nbsp;</p>
+					<p><strong>Myocardial Infarction/Acute Coronary Syndrome:</strong></p>
+					<p><span style="text-decoration: underline;">Formation of an infarct:</span></p>
+					<p>An&nbsp;<strong>infarct&nbsp;</strong>is the&nbsp;<strong>necrosis</strong> of tissue due to complete occlusion of the vessel supplying it with oxygen (of note, this is not programmed cell death or apoptosis). The formation of a myocardial infarct (occlusion of a coronary artery) develops in three stages:</p>
+					<ul>
+					<li>Plaques form in the arteries, as a <strong>result of LDL depositing into the subendothelial space of the blood vessels</strong> which supply blood to the heart. These plaques partially occlude the vessel, and on their own can result in ischemia&nbsp;</li>
+					<li>An&nbsp;<strong>ACUTE PLAQUE CHANGE OCCURS</strong>. This involves damage to the&nbsp;<strong>fibrous cap</strong> which covers the plaque. Exposure of the inside of the fibrous cap facilitates&nbsp;<strong>acute thrombosis</strong></li>
+					<li>Acute thrombosis at the site of the plaque then causes&nbsp;<strong>sudden occlusion of a coronary lumen</strong>. This sudden occlusion induces myocardial necrosis.</li>
+					</ul>
+					<p>This infarct results in ischemic damage to the endocardium of the heart.&nbsp;<strong>The inadequate oxygen supply to the heart to meet the heart's oxygen demand</strong> facilitates the damage. An ischemic area is produced in the area that is not recieving adequate oxygen supply.&nbsp;Sudden cell death, or necrosis progressively&nbsp;spreads within that zone starting in the subendocardium with the least oxygen supply.</p>
+					<p>&nbsp;</p>
+					<p><span style="text-decoration: underline;">NSTEMI vs STEMI:</span></p>
+					<p>The classification of a myocardial infarct can be generalized as an NSTEMI or a STEMI, based on the EKG (more complicated classifications exist based on positioning and other factors, not important for us to know).&nbsp;</p>
+					<p><strong>NSTEMI&nbsp;</strong>stands for&nbsp;<strong>non-ST segment elevation myocardial infarction</strong>. This is commonly the result of short duration occlusions of the coronary artery, micro-infarcts, or existing ischemia. In an NSTEMI, the ischemic damage has caused damage to the&nbsp;<strong>inner ~50%</strong>&nbsp;<strong>of the endocardium</strong>. The fact that the inner portion of the endocardium is affected first should make sense, the vessels supplying oxygen are exterior of the heart, so oxygen concentrations are lowest in this area. Looking at the EKG, this presents with a normal or depressed ST segment and/or inversed T wave.</p>
+					<p><strong>STEMI&nbsp;</strong>stands for <strong>ST-segment elevation myocardial infarction</strong>. This is typically also a result of sudden occlusion caused by aforementioned acute plaque transformation, where the ischemic damage caused <strong>spans the entire diameter of the endocardium</strong>. Looking at the EKG, this presents with an elevation in the ST segment (hence the name).&nbsp;</p>
+					<p>&nbsp;</p>
+					<p><span style="text-decoration: underline;">Signs and symptoms:</span></p>
+					<ul>
+					<li><strong>Crushing chest pain</strong>, as a result of tissue damage activating pain fibers. Not always a symptom</li>
+					<li>Irradiation of pain to left arm, jaw and back</li>
+					<li>Nausea, anxiety, malaise</li>
+					<li>HF symptoms (shortness of breath, lightheadedness, confusion, to be discussed)</li>
+					<li><strong>Elevated troponin -&nbsp;</strong>released from the necrosis of myocytes, a diagnostic criteria</li>
+					<li>Aforementioned ST changes</li>
+					<li><strong>ELEVATED HR AND BP, a result of SANS activation in response to pain</strong></li>
+					<li>Elevated HR and low BP, reason to be discussed</li>
+					</ul>
+					<p>Troponin is a key biomarker in diagnosis of an MI. Of importance, troponin takes time to peak in patients with an MI.&nbsp;<strong>A negative troponin biomaker assay does not indicate no MI, recheck troponin in three hours&nbsp;</strong>(per AHA guidelines, see <a href="https://doi.org/10.1161/JAHA.117.005852)">https://doi.org/10.1161/JAHA.117.005852)</a>.</p>
+					<p>&nbsp;</p>
+					<p><span style="text-decoration: underline;">Complications of an MI:</span></p>
+					<ul>
+					<li><strong>Arrythmias are the most lethal</strong> consequence of an MI. Damage to the endocardium inhibits proper electrical signaling, increasing the risk (to be discussed)</li>
+					<li>Contractile dysfunction (aka acute heart failure, also to be discussed)</li>
+					<li>Cardia rupture</li>
+					<li>Chronic ischemic heart disease</li>
+					<li>...and much more!</li>
+					</ul>
+					<p>&nbsp;</p>
+					<p><span style="text-decoration: underline;">Theraputic goals:</span></p>
+					<ul>
+					<li>Reducing clot formation&nbsp;and revascularizing the heart (to treat and prevent MI)</li>
+					<li>Increased O2 delivery to tissue and lower O2 demand (to combat further ischemic damage)</li>
+					<li>Prevent arrythmias (to be discussed)</li>
+					<li>Prevent myocardial remodeling (to be discussed)</li>
+					</ul>
+					<p>&nbsp;</p>
+				</div>
+
+                <div id="hf" class="tab-content">
+                    <p>Cardiac Cycle:</p>
+					<p>Recall there are two steps to the cardiac cycle, diastole and systole. Diastole is the relaxation of the ventricles of the heart, occurring after heart contraction. Diastole creates negative pressure in the heart chamber as the volume increases, opening the heart valves and pulling in blood. Contraction of the atrium aids in the filling of the ventricles. Systole follows, where contraction of the ventricles increases pressure in the ventricular chamber, forcing out blood. The atrium relaxes, pulling in blood into the atrial chamber from the venous system. The ability of the left ventricle to pump blood to the periphery and the rate of cardiac cycles contribute to cardiac output</p>
+					<p>&nbsp;</p>
+					<p>Cardiac Output:</p>
+					<p>Cardiac output is the output of blood from the heart over 1 minute. Cardiac output defines blood flow. Cardiac output is the result of both stroke volume and heart rate (this should make sense, stroke volume is the volume and heart rate is the rate in minutes; combined gives volume output/minute). Stroke volume can then be broken down further, into contractility and preload (also should make sense, the volume pumped out is how much blood fills the chamber and how hard you can squeeze the blood out).</p>
+					<p>&nbsp;</p>
+					<p>Contractility:</p>
+					<p>Contractility is the force of contraction of a single muscle cell. Muscle contraction is facilitated by the following process in the heart:</p>
+					<ul>
+					<li>An action potential travels through gap junctions connecting the sarcomeres together</li>
+					<li>This action potential opens voltage gated calcium receptors</li>
+					<li>This then triggers calcium release from the sarcoplasmic reticulum</li>
+					<li>Calcium binds to troponin, revealing myosin binding sites</li>
+					<li>Myosin binds to actin filaments, and pulls sarcomeres towards each other causing contraction</li>
+					</ul>
+					<p>b1 adrenergic receptors also increases contractility. Norepinephrine binds to b1, downstream signaling activates PKA, and PKA does 3 things:</p>
+					<ul>
+					<li>Increases calcium channel activity, increasing contractility by increasing calcium concentrations in the cell.</li>
+					<li>Decreases troponin activity for calcium and increases calcium export from the cell, increasing muscle relaxation.</li>
+					</ul>
+					<p>This results in short bursts of increases contractility&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+					<p>It is also important to understand the structure of the sarcomere. Myosin and actin filaments overlap within the sarcomere structure. This overlap aligns myosin with actin, and allows myosin to pull actin filaments inwards to produce contraction. This means that as the sarcomeres are stretched, more contraction occurs as there is more distance for the myosin heads to pull. This also means that, if the muscle is too far stretched and the actin and myosin filaments do not properly overlap, contractility is reduced.</p>
+					<p>&nbsp;</p>
+					<p>Preload:</p>
+					<p>The more blood that fills the chambers of the heart, the higher cardiac output becomes. As mentioned before, this has a limit. The chamber will pump out as much blood as it can, until the chamber is stretched too far by too much preload, where then overlap between myosin and actin is lowered and less volume is ejected.</p>
+					<p>&nbsp;</p>
+					<p>Heart Failure:</p>
+					<p>Heart failure is when the heart is unable to produce sufficient cardiac output to perfuse organs properly, as a result of lowered stroke volume. As a result of the lowered stroke volume but regular filling, blood pools in the chambers of the heart. This increases diastolic pressure in the heart chambers, and results in edema upstream of the heart. There are two types of heart failure:</p>
+					<p>&nbsp;</p>
+					<p>HFrEF:</p>
+					<p>HFrEF, or heart failure with reduced ejection fraction, is heart failure defined by the left ventricle being unable to eject the proper fraction of the total volume of blood in the chamber. This is a result of increased preload, which then causes ventricular hypertrophy in order compensate for the additional preload volume through addition of sarcomeres in series. This leads to the following problems:</p>
+					<ul>
+					<li>&nbsp;More fluid volume needed to produce proper cardiac output-&gt; RAAS activation</li>
+					<li>&nbsp;Increased wall stress</li>
+					<li>A lack of capillaries to supply additional sarcomeres adequate O2 supply leads to fibrosis and apoptosis</li>
+					</ul>
+					<p>&nbsp;</p>
+					<p>HFpEF:</p>
+					<p>HFpEF, or heart failure with preserved ejection fraction, is heart failure defined by the left ventricle ejecting the proper fraction of blood from the chamber, but the volume is lower. This is a result of increased afterload, which results in hypertrophy through addition of sarcomeres in parallel as a way to overcome the high pressure in the periphery. This remodeling lowers the volume in the ventricle, lowering filling volume and by extension stroke volume. This leads to the following:</p>
+					<ul>
+					<li>&nbsp;A lack of capillaries to supply the additional muscle</li>
+					<li>&nbsp;Diastolic dysfunction</li>
+					</ul>
+                </div>
+
+                <div id="arrhythmias" class="tab-content">
+                    <h3>Arrhythmias</h3>
+                    <p>Content coming soon...</p>
+                </div>
+            </div>
+
+            <div id="respiratory" class="sub-page">
+                <div class="tab-container">
+                    <button class="tab-button active" data-tab="cough">Cough, Cold, and Flu</button>
+                    <button class="tab-button" data-tab="asthma">Asthma</button>
+                    <button class="tab-button" data-tab="copd">COPD</button>
+                    <button class="tab-button" data-tab="vte">VTE and PE</button>
+                </div>
+
+                <div id="cough" class="tab-content active">
+                    <h3>Cough, Cold, and Flu</h3>
+                    <p>Content coming soon...</p>
+                </div>
+
+                <div id="asthma" class="tab-content">
+                    <h3>Asthma</h3>
+                    <p>Content coming soon...</p>
+                </div>
+
+                <div id="copd" class="tab-content">
+                    <h3>COPD</h3>
+                    <p>Content coming soon...</p>
+                </div>
+
+                <div id="vte" class="tab-content">
+                    <h3>VTE and PE</h3>
+                    <p>Content coming soon...</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="tpx" class="page">
+            <h2 class="section-header">Therapeutics</h2>
+            <p>Content coming soon...</p>
+        </div>
+
+        <div id="calc" class="page">
+            <h2 class="section-header">Clinical Calculators</h2>
+            <div class="tab-container">
+                <button class="tab-button active" data-tab="ascvd">ASCVD Risk Calculator</button>
+                <!-- Add other calculator tabs here -->
+            </div>
+
+            <div id="ascvd" class="tab-content active">
+                <iframe 
+                    src="https://tools.acc.org/ascvd-risk-estimator-plus/#!/calculate/estimate/"
+                    class="calculator-frame"
+                    title="ASCVD Risk Calculator">
+                </iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Script remains the same as before
+        document.querySelectorAll('.nav-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const pageId = button.getAttribute('data-page');
+                showPage(pageId);
+                
+                document.querySelectorAll('.nav-button').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                button.classList.add('active');
+            });
+        });
+
+        document.querySelectorAll('.sub-nav-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const subPageId = button.getAttribute('data-subpage');
+                showSubPage(subPageId);
+                
+                document.querySelectorAll('.sub-nav-button').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                button.classList.add('active');
+            });
+        });
+
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const tabId = button.getAttribute('data-tab');
+                showTab(tabId);
+                
+                const container = button.closest('.tab-container');
+                container.querySelectorAll('.tab-button').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                button.classList.add('active');
+            });
+        });
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        function showSubPage(subPageId) {
+            document.querySelectorAll('.sub-page').forEach(subPage => {
+                subPage.classList.remove('active');
+            });
+            document.getElementById(subPageId).classList.add('active');
+        }
+
+        function showTab(tabId) {
+            const tabContent = document.getElementById(tabId);
+            const container = tabContent.closest('.sub-page, .page');
+            
+            container.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            tabContent.classList.add('active');
+        }
+    </script>
+</body>
+</html>
