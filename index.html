@@ -376,6 +376,7 @@
             <div class="tab-container">
                 <button class="tab-button active" data-tab="ascvd">ASCVD Risk Calculator</button>
                 <button class="tab-button inactive" data-tab="creatinine">Creatinine Clearance Calculator</button>
+				<button class="tab-button inactive" data-tab="drug-concentration">Drug Concentration Calculator</button>
             </div>
 
             <div id="ascvd" class="tab-content active">
@@ -425,6 +426,99 @@
                     <p id="ideal-body-weight"></p>
                     <p id="adjusted-body-weight"></p>
                     <p id="creatinine-clearance"></p>
+				</div>
+			</div>
+			
+			<div id="drug-concentration" class="tab-content inactive">
+			<div class="dual-calculator-container">
+				<!-- Single Point Calculation Mode -->
+				<div id="single-point" class="calculator-section">
+					<h3>Single Point Drug Concentration Calculator</h3>
+					<form id="single-point-form">
+						<div class="form-group">
+							<label>Bioavailability (F, as a decimal):</label>
+							<input type="number" id="bioavailability" step="0.01" required>
+						</div>
+						<div class="form-group">
+							<label>Volume of Distribution (Vd, L):</label>
+							<input type="number" id="volume-distribution" required>
+						</div>
+						<div class="form-group">
+							<label>Choose Input Mode:</label>
+							<select id="input-mode" onchange="toggleClearanceHalfLifeInputs()">
+								<option value="clearance">Clearance & Volume</option>
+								<option value="half-life">Half-Life & Volume</option>
+							</select>
+						</div>
+						<div id="clearance-input" class="form-group">
+							<label>Clearance (Cl, L/hr):</label>
+							<input type="number" id="clearance">
+						</div>
+						<div id="half-life-input" class="form-group" style="display:none;">
+							<label>Half-Life (hours):</label>
+							<input type="number" id="half-life">
+						</div>
+						<div class="form-group">
+							<label>Dose:</label>
+							<input type="number" id="dose" required>
+							<select id="dose-unit">
+								<option value="1e3">mg</option>
+								<option value="1e6">µg</option>
+								<option value="1">g</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label>Time (hr):</label>
+							<input type="number" id="time" required>
+						</div>
+						<button type="button" onclick="calculateDrugConcentration()">Calculate</button>
+					</form>
+
+					<div id="results">
+						<h4>Results:</h4>
+						<p id="max-concentration"></p>
+						<p id="current-concentration"></p>
+						<p id="calculated-clearance-half-life"></p>
+						<p id="time-clearance"></p>
+					</div>
+
+					<div id="drug-level-graph"></div>
+				</div>
+
+				<!-- Divider -->
+				<div class="divider"></div>
+
+				<!-- Two Point Calculation Mode -->
+				<div id="two-point" class="calculator-section">
+					<h3>Two Point Drug Concentration Calculator</h3>
+					<form id="two-point-form">
+						<div class="form-group">
+							<label>First Concentration (mg/L):</label>
+							<input type="number" id="concentration1" required>
+						</div>
+						<div class="form-group">
+							<label>Second Concentration (mg/L):</label>
+							<input type="number" id="concentration2" required>
+						</div>
+						<div class="form-group">
+							<label>First Time (military time, HHMM):</label>
+							<input type="number" id="time1" placeholder="e.g., 1300 for 1 PM" required>
+						</div>
+						<div class="form-group">
+							<label>Second Time (military time, HHMM):</label>
+							<input type="number" id="time2" placeholder="e.g., 1530 for 3:30 PM" required>
+						</div>
+						<button type="button" onclick="calculateTwoPoint()">Calculate</button>
+					</form>
+
+					<div id="two-point-results">
+						<h4>Results:</h4>
+						<p id="two-point-half-life"></p>
+						<p id="two-point-rate-constant"></p>
+						<p id="two-point-clearance-time"></p>
+					</div>
+
+					<div id="two-point-graph"></div>
 				</div>
 			</div>
         </div>
@@ -544,5 +638,99 @@
             });
         });
     </script>
+	
+	<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+	<script>
+		function toggleClearanceHalfLifeInputs() {
+			const mode = document.getElementById('input-mode').value;
+			document.getElementById('clearance-input').style.display = (mode === 'clearance') ? 'block' : 'none';
+			document.getElementById('half-life-input').style.display = (mode === 'half-life') ? 'block' : 'none';
+		}
+
+		function calculateDrugConcentration() {
+			const F = parseFloat(document.getElementById('bioavailability').value);
+			const Vd = parseFloat(document.getElementById('volume-distribution').value);
+			const dose = parseFloat(document.getElementById('dose').value) * parseFloat(document.getElementById('dose-unit').value);
+			const time = parseFloat(document.getElementById('time').value);
+
+			const mode = document.getElementById('input-mode').value;
+			let Cl, halfLife, k;
+
+			if (mode === 'clearance') {
+				Cl = parseFloat(document.getElementById('clearance').value);
+				k = Cl / Vd;
+				halfLife = (Math.log(2) * Vd) / Cl;
+				document.getElementById('calculated-clearance-half-life').textContent = `Calculated Half-Life: ${halfLife.toFixed(2)} hr`;
+			} else {
+				halfLife = parseFloat(document.getElementById('half-life').value);
+				k = Math.log(2) / halfLife;
+				Cl = k * Vd;
+				document.getElementById('calculated-clearance-half-life').textContent = `Calculated Clearance: ${Cl.toFixed(2)} L/hr`;
+			}
+
+			const maxConcentration = (F * dose) / Vd;
+			const currentConcentration = maxConcentration * Math.exp(-k * time);
+			const timeToClearance = 3.3 * halfLife;
+
+			document.getElementById('max-concentration').textContent = `Max Concentration (C₀): ${maxConcentration.toFixed(2)} mg/L`;
+			document.getElementById('current-concentration').textContent = `Current Concentration at ${time} hr: ${currentConcentration.toFixed(2)} mg/L`;
+			document.getElementById('time-clearance').textContent = `Time to Full Clearance: ${timeToClearance.toFixed(2)} hr`;
+
+			const times = Array.from({length: Math.ceil(timeToClearance) + 1}, (_, i) => i);
+			const concentrations = times.map(t => maxConcentration * Math.exp(-k * t));
+			Plotly.newPlot('drug-level-graph', [
+				{ x: times, y: concentrations, mode: 'lines', name: 'Concentration Decay' },
+				{ x: [time], y: [currentConcentration], mode: 'markers', name: `Concentration at ${time} hr`, marker: { color: 'red', size: 10 } }
+			], { title: 'Drug Concentration Over Time', xaxis: { title: 'Time (hours)' }, yaxis: { title: 'Concentration (mg/L)' } });
+		}
+
+		function calculateTwoPoint() {
+			const C1 = parseFloat(document.getElementById('concentration1').value);
+			const C2 = parseFloat(document.getElementById('concentration2').value);
+			const time1 = document.getElementById('time1').value;
+			const time2 = document.getElementById('time2').value;
+
+			// Convert military time to hours
+			const hours1 = parseInt(time1.slice(0, 2)) + parseInt(time1.slice(2)) / 60;
+			const hours2 = parseInt(time2.slice(0, 2)) + parseInt(time2.slice(2)) / 60;
+			const deltaTime = Math.abs(hours2 - hours1);
+
+			const k = Math.log(C1 / C2) / deltaTime;
+			const halfLife = Math.log(2) / k;
+			const timeToClearance = 3.3 * halfLife;
+
+			document.getElementById('two-point-half-life').textContent = `Half-Life: ${halfLife.toFixed(2)} hr`;
+			document.getElementById('two-point-rate-constant').textContent = `Elimination Rate Constant (k): ${k.toFixed(2)} hr⁻¹`;
+			document.getElementById('two-point-clearance-time').textContent = `Time to Full Clearance: ${timeToClearance.toFixed(2)} hr`;
+
+			const times = Array.from({length: Math.ceil(timeToClearance) + 1},
+			(_, i) => i);
+			const concentrations = times.map(t => C1 * Math.exp(-k * (t - hours1)));
+
+			Plotly.newPlot('two-point-graph', [
+				{ x: times, y: concentrations, mode: 'lines', name: 'Concentration Decay' },
+				{ x: [hours1, hours2], y: [C1, C2], mode: 'markers', name: `Data Points`, marker: { color: 'blue', size: 10 } }
+			], { title: 'Drug Concentration Over Time', xaxis: { title: 'Time (hours)' }, yaxis: { title: 'Concentration (mg/L)' } });
+		}
+	</script>
+	
+	<style>
+    .dual-calculator-container {
+        display: flex;
+        gap: 20px;
+    }
+
+    .calculator-section {
+        flex: 1;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+    }
+
+    .divider {
+        width: 2px;
+        background-color: #ccc;
+    }
+</style>
 </body>
 </html>
