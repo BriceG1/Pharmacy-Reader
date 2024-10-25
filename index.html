@@ -380,6 +380,49 @@
                     title="ASCVD Risk Calculator">
                 </iframe>
             </div>
+			
+			<!-- Creatinine Clearance Calculator -->
+            <div id="creatinine" class="tab-content active">
+                <h3>Creatinine Clearance Calculator</h3>
+                <form id="creatinine-form">
+                    <div class="form-group">
+                        <label class="form-label">Age:</label>
+                        <input type="number" id="age" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Sex:</label>
+                        <select id="sex" required>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Height:</label>
+                        <input type="number" id="height-feet" placeholder="Feet" required> 
+                        <input type="number" id="height-inches" placeholder="Inches" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Weight:</label>
+                        <input type="number" id="weight" placeholder="Enter weight" required>
+                        <select id="weight-unit">
+                            <option value="kg">kg</option>
+                            <option value="lb">lb</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Serum Creatinine (mg/dL):</label>
+                        <input type="number" id="serum-creatinine" step="0.1" required>
+                    </div>
+                    <button type="button" onclick="calculateCreatinineClearance()">Calculate</button>
+                </form>
+                
+                <div id="results" class="result">
+                    <h4>Results:</h4>
+                    <p id="ideal-body-weight"></p>
+                    <p id="adjusted-body-weight"></p>
+                    <p id="creatinine-clearance"></p>
+				</div>
+			</div>
         </div>
     </div>
 
@@ -445,6 +488,57 @@
             });
             tabContent.classList.add('active');
         }
+		
+		function calculateCreatinineClearance() {
+            const age = parseFloat(document.getElementById('age').value);
+            const sex = document.getElementById('sex').value;
+            const heightFeet = parseFloat(document.getElementById('height-feet').value);
+            const heightInches = parseFloat(document.getElementById('height-inches').value);
+            const weight = parseFloat(document.getElementById('weight').value);
+            const weightUnit = document.getElementById('weight-unit').value;
+            const serumCreatinine = parseFloat(document.getElementById('serum-creatinine').value);
+
+            // Convert weight to kg if entered in pounds
+            const weightKg = weightUnit === 'lb' ? weight * 0.453592 : weight;
+
+            // Calculate height in inches
+            const totalHeightInches = (heightFeet * 12) + heightInches;
+
+            // Calculate ideal body weight (IBW)
+            let idealBodyWeight = sex === 'male'
+                ? 50 + 2.3 * (totalHeightInches - 60)
+                : 45.5 + 2.3 * (totalHeightInches - 60);
+            
+            // Determine if adjusted body weight (ABW) is needed
+            const ratio = weightKg / idealBodyWeight;
+            const adjustedBodyWeight = ratio > 1.3
+                ? idealBodyWeight + 0.4 * (weightKg - idealBodyWeight)
+                : null;
+
+            // Calculate creatinine clearance (CLcr) using Cockcroft-Gault
+            const weightForCalculation = adjustedBodyWeight || weightKg;
+            let creatinineClearance = ((140 - age) * weightForCalculation) / (72 * serumCreatinine);
+            if (sex === 'female') {
+                creatinineClearance *= 0.85;
+            }
+
+            // Display results
+            document.getElementById('ideal-body-weight').textContent = `Ideal Body Weight (IBW): ${idealBodyWeight.toFixed(2)} kg`;
+            document.getElementById('adjusted-body-weight').textContent = adjustedBodyWeight
+                ? `Adjusted Body Weight (ABW): ${adjustedBodyWeight.toFixed(2)} kg`
+                : 'Adjusted Body Weight (ABW): Not needed';
+            document.getElementById('creatinine-clearance').textContent = `Creatinine Clearance (CLcr): ${creatinineClearance.toFixed(2)} mL/min`;
+        }
+
+        // Tab navigation script
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', () => {
+                document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+                document.getElementById(button.dataset.tab).classList.add('active');
+                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+            });
+        });
     </script>
 </body>
 </html>
